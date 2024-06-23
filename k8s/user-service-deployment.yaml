@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: user-service:latest
+          image: asylbek811/user-service:latest
           ports:
             - containerPort: 5000

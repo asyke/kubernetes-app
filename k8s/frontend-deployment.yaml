@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: frontend:latest
+          image: asylbek811/frontend:latest
           ports:
             - containerPort: 3000
