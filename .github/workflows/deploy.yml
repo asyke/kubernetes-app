@@ -24,21 +24,40 @@ jobs:
 
       - name: Build and push user-service Docker image
         run: |
-          ls -la
           cd user-service
           docker build -t ${{ secrets.DOCKER_USERNAME }}/user-service:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/user-service:latest
 
-      - name: Build and push product-service Docker image
-        run: |
-          ls -la
-          cd product-service
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/product-service:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/product-service:latest
+      # - name: Build and push product-service Docker image
+      #   run: |
+      #     cd product-service
+      #     docker build -t ${{ secrets.DOCKER_USERNAME }}/product-service:latest .
+      #     docker push ${{ secrets.DOCKER_USERNAME }}/product-service:latest
 
       - name: Build and push order-service Docker image
         run: |
-          ls -la
           cd order-service
           docker build -t ${{ secrets.DOCKER_USERNAME }}/order-service:latest .
-          docker
+          docker push ${{ secrets.DOCKER_USERNAME }}/order-service:latest
+
+      - name: Build and push frontend Docker image
+        run: |
+          cd frontend
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v1
+        with:
+          version: 'latest'
+
+      - name: Configure kubectl
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+      - name: Update Kubernetes deployments
+        run: |
+          kubectl set image deployment/user-service-deployment user-service=${{ secrets.DOCKER_USERNAME }}/user-service:latest
+          kubectl set image deployment/frontend-deployment frontend=${{ secrets.DOCKER_USERNAME }}/frontend:latest
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
