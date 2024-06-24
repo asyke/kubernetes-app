@@ -35,9 +35,9 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
       - name: Set up kubectl
-        uses: manusa/actions-setup-kubectl@v2
+        uses: azure/setup-kubectl@v1
         with:
-          version: '1.30.2'
+          version: 'v1.30.2'
 
       - name: Configure kubectl
         run: |
