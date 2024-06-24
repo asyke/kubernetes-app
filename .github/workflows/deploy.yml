@@ -62,9 +62,3 @@ jobs:
           kubectl set image deployment/frontend-deployment frontend=${{ secrets.DOCKER_USERNAME }}/frontend:latest
           kubectl rollout status deployment/user-service-deployment
           kubectl rollout status deployment/frontend-deployment
-
-      - name: Notify on failure
-        if: failure()
-        uses: some/notification-action@v1
-        with:
-          message: 'Deployment failed! Check logs for details.'
