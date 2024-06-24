@@ -35,7 +35,7 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
       - name: Set up kubectl
-        uses: azure/setup-kubectl@v1
+        uses: actions-hub/kubectl@master
         with:
           version: '1.30.2'
 
