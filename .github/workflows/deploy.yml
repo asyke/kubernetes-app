@@ -43,10 +43,13 @@ jobs:
         run: |
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+          kubectl config view
         env:
           KUBECONFIG: $HOME/.kube/config
 
       - name: Update Kubernetes deployments
+        env:
+          KUBECONFIG: $HOME/.kube/config
         run: |
           kubectl set image deployment/user-service-deployment user-service=${{ secrets.DOCKER_USERNAME }}/user-service:latest
           kubectl set image deployment/frontend-deployment frontend=${{ secrets.DOCKER_USERNAME }}/frontend:latest
